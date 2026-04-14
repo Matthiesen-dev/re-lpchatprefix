@@ -87,6 +87,26 @@ public class ReLPChatPrefix {
         serverChat.sendMessage(finalComponent);
     }
 
+    public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
+        Audience serverChat = getAdventure().all();
+        String playerName = player.getName().getString();
+
+        if (messageFormat.contains("{player}")) {
+            messageFormat = messageFormat.replace("{player}", playerName);
+        }
+
+        Component finalComponent = miniMessage.deserialize(messageFormat);
+        serverChat.sendMessage(finalComponent);
+    }
+
+    public static void onLogin(ServerPlayer player) {
+        loginLogoutEvent(player, config.chatOverrides.joinMessage);
+    }
+
+    public static void onLogout(ServerPlayer player) {
+        loginLogoutEvent(player, config.chatOverrides.leaveMessage);
+    }
+
     private static @NotNull String getMessageFormat(ServerPlayer player, User user) {
         CachedMetaData meta = user.getCachedData().getMetaData();
 

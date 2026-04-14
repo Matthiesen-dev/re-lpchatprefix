@@ -16,12 +16,22 @@ public class ModConfig {
         public boolean enableSuffix = true;
 
         @SerializedName("messageFormat")
-        public String messageFormat = "{prefix}{player}{suffix}: ";
+        public String messageFormat = "{prefix}{player}{suffix} <gray><bold>»<reset>";
 
         @SerializedName("messageColor")
         public String messageColor = "white";
     }
 
+    @SerializedName("chatOverrides")
+    public ChatOverrides chatOverrides = new ChatOverrides();
+
+    public static class ChatOverrides {
+        @SerializedName("joinMessage")
+        public String joinMessage = "<yellow>{player} joined the game<reset>";
+
+        @SerializedName("leaveMessage")
+        public String leaveMessage = "<yellow>{player} left the game<reset>";
+    }
 
     public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
