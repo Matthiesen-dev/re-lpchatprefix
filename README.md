@@ -1,1 +1,1 @@
-# template-cobblemon-sidemod
+# re-lpchatprefix

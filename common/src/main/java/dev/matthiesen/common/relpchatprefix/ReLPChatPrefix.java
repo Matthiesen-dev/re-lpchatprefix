@@ -21,7 +21,7 @@ public class ReLPChatPrefix {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
     private static volatile MinecraftServerAudiences adventure;
 
-    public static MinecraftServerAudiences adventure() {
+    public static MinecraftServerAudiences getAdventure() {
         if (adventure == null) {
             throw new IllegalStateException("Tried to access Adventure without a running server!");
         }
@@ -58,7 +58,8 @@ public class ReLPChatPrefix {
     }
 
     public static void onServerChat(ServerPlayer player, String rawText) {
-        luckPerms = getLuckPerms();
+        LuckPerms luckPerms = getLuckPerms();
+        Audience serverChat = getAdventure().all();
 
         if (luckPerms == null) {
             return;
@@ -83,8 +84,7 @@ public class ReLPChatPrefix {
 
         Component finalComponent = playerComponent.append(messageComponent);
 
-        Audience onlinePlayers = adventure.players();
-        onlinePlayers.sendMessage(finalComponent);
+        serverChat.sendMessage(finalComponent);
     }
 
     private static @NotNull String getMessageFormat(ServerPlayer player, User user) {
