@@ -71,19 +71,15 @@ public class ReLPChatPrefix {
             return;
         }
 
-        String messageFormat = getMessageFormat(player, user);
-
-        NamedTextColor messageColor = getAdventureColor(config.mainConfig.messageColor);
-
+        String messageFormat = getChatMessageFormat(player, user);
+        NamedTextColor messageColor = Constants.getAdventureColor(config.mainConfig.messageColor);
         Component playerComponent = miniMessage.deserialize(messageFormat);
-
         Component messageComponent = Component.text()
                 .content(" " + rawText)
                 .color(messageColor)
                 .build();
 
         Component finalComponent = playerComponent.append(messageComponent);
-
         serverChat.sendMessage(finalComponent);
     }
 
@@ -107,7 +103,7 @@ public class ReLPChatPrefix {
         loginLogoutEvent(player, config.chatOverrides.leaveMessage);
     }
 
-    private static @NotNull String getMessageFormat(ServerPlayer player, User user) {
+    private static @NotNull String getChatMessageFormat(ServerPlayer player, User user) {
         CachedMetaData meta = user.getCachedData().getMetaData();
 
         String prefix = meta.getPrefix();
@@ -119,12 +115,11 @@ public class ReLPChatPrefix {
         if (prefix == null) prefix = "";
         if (suffix == null) suffix = "";
 
-        return getFormat(player, prefix, suffix);
+        return getChatFormat(player, prefix, suffix);
     }
 
-    private static @NotNull String getFormat(ServerPlayer player, String prefix, String suffix) {
+    private static @NotNull String getChatFormat(ServerPlayer player, String prefix, String suffix) {
         String playerName = player.getName().getString();
-
         String messageFormat = config.mainConfig.messageFormat;
 
         if (messageFormat.contains("{prefix}")) {
@@ -138,28 +133,7 @@ public class ReLPChatPrefix {
         if (messageFormat.contains("{suffix}")) {
             messageFormat = messageFormat.replace("{suffix}", suffix);
         }
-        return messageFormat;
-    }
 
-    public static NamedTextColor getAdventureColor(String color) {
-        color = color.toLowerCase();
-        return switch (color) {
-            case "black" -> NamedTextColor.BLACK;
-            case "dark_blue" -> NamedTextColor.DARK_BLUE;
-            case "dark_green" -> NamedTextColor.DARK_GREEN;
-            case "dark_aqua" -> NamedTextColor.DARK_AQUA;
-            case "dark_red" -> NamedTextColor.DARK_RED;
-            case "dark_purple" -> NamedTextColor.DARK_PURPLE;
-            case "gold" -> NamedTextColor.GOLD;
-            case "gray" -> NamedTextColor.GRAY;
-            case "dark_gray" -> NamedTextColor.DARK_GRAY;
-            case "blue" -> NamedTextColor.BLUE;
-            case "green" -> NamedTextColor.GREEN;
-            case "aqua" -> NamedTextColor.AQUA;
-            case "red" -> NamedTextColor.RED;
-            case "light_purple" -> NamedTextColor.LIGHT_PURPLE;
-            case "yellow" -> NamedTextColor.YELLOW;
-            default -> NamedTextColor.WHITE;
-        };
+        return messageFormat;
     }
 }
