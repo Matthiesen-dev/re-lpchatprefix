@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.invoke
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 

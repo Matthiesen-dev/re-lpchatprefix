@@ -21,7 +21,7 @@ public class ReLPChatPrefix {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
     private static volatile MinecraftServerAudiences adventure;
 
-    public MinecraftServerAudiences adventure() {
+    public static MinecraftServerAudiences adventure() {
         if (adventure == null) {
             throw new IllegalStateException("Tried to access Adventure without a running server!");
         }
