@@ -2,6 +2,7 @@ package dev.matthiesen.common.relpchatprefix;
 
 import dev.matthiesen.common.relpchatprefix.config.ConfigManager;
 import dev.matthiesen.common.relpchatprefix.config.ModConfig;
+import dev.matthiesen.common.relpchatprefix.data.PlayerStore;
 import dev.matthiesen.common.relpchatprefix.formatting.Formatter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.modcommon.MinecraftServerAudiences;
@@ -13,13 +14,16 @@ import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
 public class ReLPChatPrefix {
     public static ModConfig config;
     public static LuckPerms luckPerms;
     private static volatile MinecraftServerAudiences adventure;
+    private static volatile  MinecraftServer server;
 
     public static MinecraftServerAudiences getAdventure() {
         if (adventure == null) {
@@ -33,9 +37,10 @@ public class ReLPChatPrefix {
         config = new ConfigManager().loadConfig();
     }
 
-    public static void onStartup(MinecraftServer server) {
+    public static void onStartup(MinecraftServer srv) {
         Constants.createInfoLog("Server starting, Setting up");
-        adventure = MinecraftServerAudiences.of(server);
+        adventure = MinecraftServerAudiences.of(srv);
+        server = srv;
     }
 
     public static void onShutdown() {
@@ -82,7 +87,17 @@ public class ReLPChatPrefix {
     }
 
     public static void onLogin(ServerPlayer player) {
+        Audience serverChat = getAdventure().all();
         loginLogoutEvent(player, config.chatOverrides.joinMessage);
+        ServerLevel level = server.overworld();
+        PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, Constants.MOD_ID);
+        if (!store.hasBeenSeen(player.getStringUUID())) {
+            store.setSeen(player.getStringUUID());
+            if (!config.firstJoin.enable) return;
+            String loginFormat = getChatComponent(player, config.firstJoin.message);
+            Component finalComponent = Formatter.getMessageComponent(loginFormat);
+            serverChat.sendMessage(finalComponent);
+        }
     }
 
     public static void onLogout(ServerPlayer player) {

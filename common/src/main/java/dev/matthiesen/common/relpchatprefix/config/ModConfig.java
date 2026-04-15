@@ -33,6 +33,17 @@ public class ModConfig {
         public String leaveMessage = "<yellow>{prefix}{player}{suffix} left the game<reset>";
     }
 
+    @SerializedName("firstJoin")
+    public FirstJoin firstJoin = new FirstJoin();
+
+    public static class FirstJoin {
+        @SerializedName("message")
+        public String message = "<yellow>Welcome {player} to the server!";
+
+        @SerializedName("enable")
+        public boolean enable = false;
+    }
+
     public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()

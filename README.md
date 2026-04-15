@@ -24,6 +24,10 @@ The config is located at `./config/relpchatprefix/config.json` and by default wi
   "chatOverrides": {
     "joinMessage": "<yellow>{prefix}{player}{suffix} joined the game<reset>",
     "leaveMessage": "<yellow>{prefix}{player}{suffix} left the game<reset>"
+  },
+  "firstJoin": {
+    "message": "<yellow>Welcome {player} to the server!",
+    "enable": false
   }
 }
 ```
@@ -73,3 +77,21 @@ This option allows you to override the default join message from Minecraft
 #### `leaveMessage`
 
 This option allows you to override the default leave message from Minecraft
+
+### First Join
+
+**Supported Placeholders:**
+- `{prefix}`: The player's LuckPerms prefix
+- `{player}`: The player's username
+- `{suffix}`: The player's LuckPerms suffix
+
+You can use any MiniMessage supported text code for the message format.
+For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
+
+#### `message`
+
+Allows setting the first join message for players
+
+#### `enable`
+
+Toggle for First join message
