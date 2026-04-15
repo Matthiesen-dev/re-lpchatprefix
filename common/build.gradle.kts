@@ -17,6 +17,7 @@ dependencies {
     compileOnly("net.luckperms:api:${property("luckperms_version")}")
     compileOnly("net.kyori:adventure-platform-mod-shared:${property("adventure_text_version")}")
     compileOnly("org.spongepowered:mixin:0.8.5")
+    compileOnly("io.github.llamalad7:mixinextras-neoforge:0.4.1")
 }
 
 tasks {
