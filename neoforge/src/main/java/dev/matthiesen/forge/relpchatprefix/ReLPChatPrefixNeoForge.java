@@ -45,7 +45,7 @@ public class ReLPChatPrefixNeoForge {
 
     // Fired when a player joins the server
     @SubscribeEvent
-    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+    public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
         try {
             if (event.getEntity().level().isClientSide) {
                 return;
@@ -59,7 +59,7 @@ public class ReLPChatPrefixNeoForge {
 
     // Fired when a player leaves the server
     @SubscribeEvent
-    public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
+    public void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
         try {
             if (event.getEntity().level().isClientSide) {
                 return;
