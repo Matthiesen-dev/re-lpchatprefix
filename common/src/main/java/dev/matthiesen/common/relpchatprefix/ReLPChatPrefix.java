@@ -2,6 +2,7 @@ package dev.matthiesen.common.relpchatprefix;
 
 import dev.matthiesen.common.relpchatprefix.config.ConfigManager;
 import dev.matthiesen.common.relpchatprefix.config.ModConfig;
+import dev.matthiesen.common.relpchatprefix.formatting.Formatter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.modcommon.MinecraftServerAudiences;
 import net.kyori.adventure.text.Component;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 public class ReLPChatPrefix {
     public static ModConfig config;
     public static LuckPerms luckPerms;
-    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
     private static volatile MinecraftServerAudiences adventure;
 
     public static MinecraftServerAudiences getAdventure() {
@@ -71,27 +71,9 @@ public class ReLPChatPrefix {
             return;
         }
 
-        String messageFormat = getChatMessageFormat(player, user);
-        NamedTextColor messageColor = Constants.getAdventureColor(config.mainConfig.messageColor);
-        Component playerComponent = miniMessage.deserialize(messageFormat);
-        Component messageComponent = Component.text()
-                .content(" " + rawText)
-                .color(messageColor)
-                .build();
-
-        Component finalComponent = playerComponent.append(messageComponent);
-        serverChat.sendMessage(finalComponent);
-    }
-
-    public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
-        Audience serverChat = getAdventure().all();
-        String playerName = player.getName().getString();
-
-        if (messageFormat.contains("{player}")) {
-            messageFormat = messageFormat.replace("{player}", playerName);
-        }
-
-        Component finalComponent = miniMessage.deserialize(messageFormat);
+        String messageFormat = Formatter.getChatMessageFormat(player, user);
+        Component messageComponent = Formatter.processUserMessage(rawText, config.mainConfig.messageColor);
+        Component finalComponent = Formatter.getMessageComponent(messageFormat, messageComponent);
         serverChat.sendMessage(finalComponent);
     }
 
@@ -103,37 +85,11 @@ public class ReLPChatPrefix {
         loginLogoutEvent(player, config.chatOverrides.leaveMessage);
     }
 
-    private static @NotNull String getChatMessageFormat(ServerPlayer player, User user) {
-        CachedMetaData meta = user.getCachedData().getMetaData();
-
-        String prefix = meta.getPrefix();
-        String suffix = meta.getSuffix();
-
-        if (!config.mainConfig.enablePrefix) prefix = null;
-        if (!config.mainConfig.enableSuffix) suffix = null;
-
-        if (prefix == null) prefix = "";
-        if (suffix == null) suffix = "";
-
-        return getChatFormat(player, prefix, suffix);
-    }
-
-    private static @NotNull String getChatFormat(ServerPlayer player, String prefix, String suffix) {
+    public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
+        Audience serverChat = getAdventure().all();
         String playerName = player.getName().getString();
-        String messageFormat = config.mainConfig.messageFormat;
-
-        if (messageFormat.contains("{prefix}")) {
-            messageFormat = messageFormat.replace("{prefix}", prefix);
-        }
-
-        if (messageFormat.contains("{player}")) {
-            messageFormat = messageFormat.replace("{player}", playerName);
-        }
-
-        if (messageFormat.contains("{suffix}")) {
-            messageFormat = messageFormat.replace("{suffix}", suffix);
-        }
-
-        return messageFormat;
+        messageFormat = Formatter.replacePlayerPlaceholder(playerName, messageFormat);
+        Component finalComponent = Formatter.getMessageComponent(messageFormat);
+        serverChat.sendMessage(finalComponent);
     }
 }
