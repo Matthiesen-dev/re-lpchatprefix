@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "dev.matthiesen.common.relpchatprefix.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "mixins": [
+    "PlayerConnectionMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
