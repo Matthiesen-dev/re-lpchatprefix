@@ -16,6 +16,7 @@ dependencies {
     mappings(loom.officialMojangMappings())
     compileOnly("net.luckperms:api:${property("luckperms_version")}")
     compileOnly("net.kyori:adventure-platform-mod-shared:${property("adventure_text_version")}")
+    compileOnly("org.spongepowered:mixin:0.8.5")
 }
 
 tasks {

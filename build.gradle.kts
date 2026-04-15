@@ -20,6 +20,7 @@ allprojects {
     repositories {
         mavenCentral()
         maven("https://artefacts.cobblemon.com/releases/")
+        maven("https://repo.spongepowered.org/repository/maven-public")
     }
 
     tasks {
