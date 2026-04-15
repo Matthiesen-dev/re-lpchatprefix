@@ -6,8 +6,8 @@ in your chat messages and join/leave messages with Adventure's MiniMessage suppo
 ## Requirements
 
 - NeoForge 1.21.1
-- Luckperms 5.4
-- Adventure API mod
+- [Luckperms 5.4](https://modrinth.com/mod/luckperms)
+- [Adventure API mod 6.0.1+](https://modrinth.com/mod/adventure-platform-mod)
 
 ## Config
 
