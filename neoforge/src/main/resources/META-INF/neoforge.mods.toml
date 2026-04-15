@@ -6,10 +6,10 @@ license = "MIT License"
 [[mods]]
 modId = "${mod_id}"
 version = "${version}"
-displayName = "Cobblemon Multiplatform-NeoForge Template Sidemod"
-authors = "Me!"
+displayName = "Re-LPChatPrefix"
+authors = "Adam Matthiesen"
 description = '''
-A very cool multi-line description!
+Luck Perms chat prefix designed with minimessage
 '''
 #logoFile = ""
 
