@@ -38,7 +38,7 @@ public class ModConfig {
 
     public static class FirstJoin {
         @SerializedName("message")
-        public String message = "<yellow>Welcome to the server {player}!";
+        public String message = "<yellow>Welcome {player} to the server!";
 
         @SerializedName("enable")
         public boolean enable = false;
