@@ -27,10 +27,10 @@ public class ModConfig {
 
     public static class ChatOverrides {
         @SerializedName("joinMessage")
-        public String joinMessage = "<yellow>{player} joined the game<reset>";
+        public String joinMessage = "<yellow>{prefix}{player}{suffix} joined the game<reset>";
 
         @SerializedName("leaveMessage")
-        public String leaveMessage = "<yellow>{player} left the game<reset>";
+        public String leaveMessage = "<yellow>{prefix}{player}{suffix} left the game<reset>";
     }
 
     public static final Gson GSON = new GsonBuilder()

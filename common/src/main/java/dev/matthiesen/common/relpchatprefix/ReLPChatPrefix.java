@@ -57,21 +57,25 @@ public class ReLPChatPrefix {
         return luckPerms;
     }
 
-    public static void onServerChat(ServerPlayer player, String rawText) {
+    public static String getChatComponent(ServerPlayer player, String messageFormat) {
         LuckPerms luckPerms = getLuckPerms();
-        Audience serverChat = getAdventure().all();
 
         if (luckPerms == null) {
-            return;
+            return null;
         }
 
         User user = luckPerms.getUserManager().getUser(player.getUUID());
         if (user == null) {
             Constants.LOGGER.debug("User data not found for: {}", player.getName().getString());
-            return;
+            return null;
         }
 
-        String messageFormat = Formatter.getChatMessageFormat(player, user);
+        return Formatter.getChatMessageFormat(player, user, messageFormat);
+    }
+
+    public static void onServerChat(ServerPlayer player, String rawText) {
+        Audience serverChat = getAdventure().all();
+        String messageFormat = getChatComponent(player, config.mainConfig.messageFormat);
         Component messageComponent = Formatter.processUserMessage(rawText, config.mainConfig.messageColor);
         Component finalComponent = Formatter.getMessageComponent(messageFormat, messageComponent);
         serverChat.sendMessage(finalComponent);
@@ -87,8 +91,7 @@ public class ReLPChatPrefix {
 
     public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
         Audience serverChat = getAdventure().all();
-        String playerName = player.getName().getString();
-        messageFormat = Formatter.replacePlayerPlaceholder(playerName, messageFormat);
+        messageFormat = getChatComponent(player, messageFormat);
         Component finalComponent = Formatter.getMessageComponent(messageFormat);
         serverChat.sendMessage(finalComponent);
     }

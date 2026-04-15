@@ -40,7 +40,7 @@ public class Formatter {
         };
     }
 
-    public static @NotNull String getChatMessageFormat(ServerPlayer player, User user) {
+    public static @NotNull String getChatMessageFormat(ServerPlayer player, User user, String messageFormat) {
         CachedMetaData meta = user.getCachedData().getMetaData();
 
         String prefix = meta.getPrefix();
@@ -52,14 +52,7 @@ public class Formatter {
         if (prefix == null) prefix = "";
         if (suffix == null) suffix = "";
 
-        return getChatFormat(player, prefix, suffix, ReLPChatPrefix.config.mainConfig.messageFormat);
-    }
-
-    public static String replacePlayerPlaceholder(String playerName, String messageFormat) {
-        if (messageFormat.contains("{player}")) {
-            messageFormat = messageFormat.replace("{player}", playerName);
-        }
-        return messageFormat;
+        return getChatFormat(player, prefix, suffix, messageFormat);
     }
 
     public static @NotNull String getChatFormat(ServerPlayer player, String prefix, String suffix, String messageFormat) {
@@ -69,7 +62,9 @@ public class Formatter {
             messageFormat = messageFormat.replace("{prefix}", prefix);
         }
 
-        messageFormat = replacePlayerPlaceholder(playerName, messageFormat);
+        if (messageFormat.contains("{player}")) {
+            messageFormat = messageFormat.replace("{player}", playerName);
+        }
 
         if (messageFormat.contains("{suffix}")) {
             messageFormat = messageFormat.replace("{suffix}", suffix);
