@@ -7,7 +7,12 @@ in your chat messages and join/leave messages with Adventure's MiniMessage suppo
 
 - NeoForge 1.21.1
 - [Luckperms 5.4](https://modrinth.com/mod/luckperms)
-- [Adventure API mod 6.0.1+](https://modrinth.com/mod/adventure-platform-mod)
+
+### Included Mods
+
+The following mods are bundled (Jar-in-Jar) with this mod and do not need to be installed separately:
+
+- [Adventure API 6.0.0](https://modrinth.com/mod/adventure-platform-mod)
 
 ## Config
 
