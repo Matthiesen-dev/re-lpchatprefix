@@ -12,7 +12,7 @@ in your chat messages and join/leave messages with Adventure's MiniMessage suppo
 
 The following mods are bundled (Jar-in-Jar) with this mod and do not need to be installed separately:
 
-- [Adventure API 6.0.0](https://modrinth.com/mod/adventure-platform-mod)
+- [Adventure Platform Mod 6.0.0](https://modrinth.com/mod/adventure-platform-mod)
 
 ## Config
 
