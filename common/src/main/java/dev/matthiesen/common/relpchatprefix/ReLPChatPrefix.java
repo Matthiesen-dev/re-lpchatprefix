@@ -1,52 +1,47 @@
 package dev.matthiesen.common.relpchatprefix;
 
-import dev.matthiesen.common.relpchatprefix.config.ConfigManager;
+import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
+import dev.matthiesen.common.matthiesen_lib_api.config.ConfigManager;
+import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibTextParser;
+import dev.matthiesen.common.relpchatprefix.compat.AdventureCompat;
 import dev.matthiesen.common.relpchatprefix.config.ModConfig;
-import dev.matthiesen.common.relpchatprefix.data.PlayerStore;
-import dev.matthiesen.common.relpchatprefix.formatting.Formatter;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.modcommon.MinecraftServerAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import dev.matthiesen.common.relpchatprefix.config.ReLpChatPrefixConfigManager;
+import dev.matthiesen.common.relpchatprefix.events.PlayerEvents;
+import dev.matthiesen.common.relpchatprefix.events.ServerEvents;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.user.User;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.saveddata.SavedData;
-import org.jetbrains.annotations.NotNull;
 
 public class ReLPChatPrefix {
-    public static ModConfig config;
-    public static LuckPerms luckPerms;
-    private static volatile MinecraftServerAudiences adventure;
-    private static volatile  MinecraftServer server;
-
-    public static MinecraftServerAudiences getAdventure() {
-        if (adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure without a running server!");
-        }
-        return adventure;
-    }
+    private static final ConfigManager<ModConfig> CONFIG_MANAGER =
+            new ReLpChatPrefixConfigManager<>(ModConfig.class, "config");
+    private static volatile LuckPerms luckPerms;
+    private static MatthiesenLibTextParser textParser;
 
     public static void initialize() {
+        CONFIG_MANAGER.loadConfig();
+        AdventureCompat.init();
+
+        // TODO: Make this configurable once this mod supports other parsers
+        textParser = AdventureCompat.getParser();
+
+        MatthiesenLibApi.registerPlayerEventHandler(Constants.MOD_ID, new PlayerEvents());
         Constants.createInfoLog("Initialized");
-        config = new ConfigManager().loadConfig();
     }
 
-    public static void onStartup(MinecraftServer srv) {
-        Constants.createInfoLog("Server starting, Setting up");
-        adventure = MinecraftServerAudiences.of(srv);
-        server = srv;
+    public static void onServerChat(ServerPlayer player, String rawText) {
+        ServerEvents.onServerChat(player, rawText);
     }
 
-    public static void onShutdown() {
-        Constants.createInfoLog("Server stopping, shutting down");
-        new ConfigManager().saveConfig();
-        adventure = null;
+    public static MatthiesenLibTextParser getTextParser() {
+        if (textParser == null) {
+            throw new IllegalStateException("Text parser not initialized!");
+        }
+        return textParser;
+    }
+
+    public static ModConfig getConfig() {
+        return CONFIG_MANAGER.getConfig();
     }
 
     public static LuckPerms getLuckPerms() {
@@ -60,54 +55,5 @@ public class ReLPChatPrefix {
             }
         }
         return luckPerms;
-    }
-
-    public static String getChatComponent(ServerPlayer player, String messageFormat) {
-        LuckPerms luckPerms = getLuckPerms();
-
-        if (luckPerms == null) {
-            return null;
-        }
-
-        User user = luckPerms.getUserManager().getUser(player.getUUID());
-        if (user == null) {
-            Constants.LOGGER.debug("User data not found for: {}", player.getName().getString());
-            return null;
-        }
-
-        return Formatter.getChatMessageFormat(player, user, messageFormat);
-    }
-
-    public static void onServerChat(ServerPlayer player, String rawText) {
-        Audience serverChat = getAdventure().all();
-        String messageFormat = getChatComponent(player, config.mainConfig.messageFormat);
-        Component messageComponent = Formatter.processUserMessage(rawText, config.mainConfig.messageColor);
-        Component finalComponent = Formatter.getMessageComponent(messageFormat, messageComponent);
-        serverChat.sendMessage(finalComponent);
-    }
-
-    public static void onLogin(ServerPlayer player) {
-        Audience serverChat = getAdventure().all();
-        loginLogoutEvent(player, config.chatOverrides.joinMessage);
-        ServerLevel level = server.overworld();
-        PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, Constants.MOD_ID);
-        if (!store.hasBeenSeen(player.getStringUUID())) {
-            store.setSeen(player.getStringUUID());
-            if (!config.firstJoin.enable) return;
-            String loginFormat = getChatComponent(player, config.firstJoin.message);
-            Component finalComponent = Formatter.getMessageComponent(loginFormat);
-            serverChat.sendMessage(finalComponent);
-        }
-    }
-
-    public static void onLogout(ServerPlayer player) {
-        loginLogoutEvent(player, config.chatOverrides.leaveMessage);
-    }
-
-    public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
-        Audience serverChat = getAdventure().all();
-        messageFormat = getChatComponent(player, messageFormat);
-        Component finalComponent = Formatter.getMessageComponent(messageFormat);
-        serverChat.sendMessage(finalComponent);
     }
 }

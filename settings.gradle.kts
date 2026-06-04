@@ -8,6 +8,8 @@ pluginManagement {
         maven("https://repo.spongepowered.org/repository/maven-public")
         gradlePluginPortal()
     }
+
+    includeBuild("gradle/build-logic")
 }
 
 listOf(
