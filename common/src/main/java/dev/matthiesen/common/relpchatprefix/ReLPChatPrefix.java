@@ -27,11 +27,8 @@ public class ReLPChatPrefix {
         // TODO: Make this configurable once this mod supports other parsers
         textParser = AdventureCompat.getParser();
 
-        MatthiesenLibApi.registerPlayerEventHandler(Constants.MOD_ID, new PlayerEvents());
-        MatthiesenLibApi.registerReloadRunnable(Constants.MOD_ID, () -> {
-            CONFIG_MANAGER.loadConfig();
-            Constants.createInfoLog("Configuration reloaded");
-        });
+        MatthiesenLibApi.registerPlayerEventHandler(Constants.MOD_ID, PlayerEvents.getInstance());
+        MatthiesenLibApi.registerReloadRunnable(Constants.MOD_ID, ReLPChatPrefix::reload);
         Constants.createInfoLog("Initialized");
     }
 
@@ -44,6 +41,11 @@ public class ReLPChatPrefix {
             throw new IllegalStateException("Text parser not initialized!");
         }
         return textParser;
+    }
+
+    public static void reload() {
+        CONFIG_MANAGER.loadConfig();
+        Constants.createInfoLog("Configuration reloaded");
     }
 
     public static ModConfig getConfig() {

@@ -13,6 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
+    public static final PlayerEvents INSTANCE = new PlayerEvents();
+
     @Override
     public void onPlayerJoin(ServerPlayer player) {
         ModConfig config = ReLPChatPrefix.getConfig();
@@ -42,7 +44,7 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
         loginLogoutEvent(player, ReLPChatPrefix.getConfig().chatOverrides.leaveMessage);
     }
 
-    public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
+    public void loginLogoutEvent(ServerPlayer player, String messageFormat) {
         try {
             messageFormat = Formatter.getChatComponent(player, messageFormat);
             Component message = Formatter.getMessageComponent(messageFormat);
@@ -50,5 +52,9 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
         } catch (RuntimeException e) {
             Constants.createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
         }
+    }
+
+    public static PlayerEvents getInstance() {
+        return INSTANCE;
     }
 }
