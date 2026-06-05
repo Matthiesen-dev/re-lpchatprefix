@@ -28,6 +28,10 @@ public class ReLPChatPrefix {
         textParser = AdventureCompat.getParser();
 
         MatthiesenLibApi.registerPlayerEventHandler(Constants.MOD_ID, new PlayerEvents());
+        MatthiesenLibApi.registerReloadRunnable(Constants.MOD_ID, () -> {
+            CONFIG_MANAGER.loadConfig();
+            Constants.createInfoLog("Configuration reloaded");
+        });
         Constants.createInfoLog("Initialized");
     }
 
