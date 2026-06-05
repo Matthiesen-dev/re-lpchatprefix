@@ -1,11 +1,17 @@
 # Re LPChatPrefix
 
+<div>
+  <img src="https://mods.matthiesen.dev/badges/matthiesenLibAPI.svg" alt="Matthiesen Lib API">
+  <img src="https://mods.matthiesen.dev/badges/luckperms.svg" alt="Luckperms">
+</div>
+
 This is a simple Server-Sided mod that gives you LuckPerms prefix/suffix support for usernames 
 in your chat messages and join/leave messages with Adventure's MiniMessage support in NeoForge
 
 ## Requirements
 
 - NeoForge 1.21.1
+- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
 - [Luckperms 5.4](https://modrinth.com/mod/luckperms)
 
 ### Included Mods
@@ -14,89 +20,16 @@ The following mods are bundled (Jar-in-Jar) with this mod and do not need to be 
 
 - [Adventure Platform Mod 6.0.0](https://modrinth.com/mod/adventure-platform-mod)
 
-## Config
+## Docs
 
-The config is located at `./config/relpchatprefix/config.json` and by default will look like the following:
+Documentation for this mod can be found at [mods.matthiesen.dev](https://mods.matthiesen.dev/re-lpchatprefix/)
 
-```json
-{
-  "mainConfig": {
-    "enablePrefix": true,
-    "enableSuffix": true,
-    "messageFormat": "{prefix}{player}{suffix} <gray><bold>»<reset>",
-    "messageColor": "white"
-  },
-  "chatOverrides": {
-    "joinMessage": "<yellow>{prefix}{player}{suffix} joined the game<reset>",
-    "leaveMessage": "<yellow>{prefix}{player}{suffix} left the game<reset>"
-  },
-  "firstJoin": {
-    "message": "<yellow>Welcome {player} to the server!",
-    "enable": false
-  }
-}
-```
+## Version Compatibility
 
-### Main Config options
+| Minecraft Version | Mod Version |
+|-------------------|-------------|
+| 1.21.1            | 1.x.x       |
 
-#### `enablePrefix`
+## License
 
-Allows you to enable or disable prefixes in the chat
-
-#### `enableSuffix`
-
-Allows you to enable or disable Suffixes in the chat
-
-#### `messageFormat`
-
-The provided format for chat messages being sent by users.
-
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
-
-You can use any MiniMessage supported text code for the message format. 
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
-
-#### `messageColor`
-
-The provided message color to use for chat messages, by default uses White to align with the Minecraft defaults.
-
-You can use any standard Minecraft formatting color name.
-
-### Chat Overrides
-
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
-
-You can use any MiniMessage supported text code for the message format.
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
-
-#### `joinMessage`
-
-This option allows you to override the default join message from Minecraft
-
-#### `leaveMessage`
-
-This option allows you to override the default leave message from Minecraft
-
-### First Join
-
-**Supported Placeholders:**
-- `{prefix}`: The player's LuckPerms prefix
-- `{player}`: The player's username
-- `{suffix}`: The player's LuckPerms suffix
-
-You can use any MiniMessage supported text code for the message format.
-For more details check out the [Adventure MiniMessage Docs](https://docs.papermc.io/adventure/minimessage/format/)
-
-#### `message`
-
-Allows setting the first join message for players
-
-#### `enable`
-
-Toggle for First join message
+MIT - see `LICENSE`.
