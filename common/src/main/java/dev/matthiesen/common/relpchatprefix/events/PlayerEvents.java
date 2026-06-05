@@ -18,18 +18,22 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
         ModConfig config = ReLPChatPrefix.getConfig();
         loginLogoutEvent(player, config.chatOverrides.joinMessage);
 
-        MinecraftServer server = ServerUtil.getServer();
-        ServerLevel level = server.overworld();
-        PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, Constants.MOD_ID);
-        String playerUUID = player.getStringUUID();
+        try {
+            MinecraftServer server = ServerUtil.getServer();
+            ServerLevel level = server.overworld();
+            PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, Constants.MOD_ID);
+            String playerUUID = player.getStringUUID();
 
-        if (!store.hasBeenSeen(playerUUID)) {
-            store.setSeen(playerUUID);
-            if (!config.firstJoin.enable) return;
-            String loginFormat = Formatter.getChatComponent(player, config.firstJoin.message);
-            Component message = Formatter.getMessageComponent(loginFormat);
-            ServerUtil.sendToAllAndConsole(message);
+            if (!store.hasBeenSeen(playerUUID)) {
+                store.setSeen(playerUUID);
+                if (!config.firstJoin.enable) return;
+                String loginFormat = Formatter.getChatComponent(player, config.firstJoin.message);
+                Component message = Formatter.getMessageComponent(loginFormat);
+                ServerUtil.sendToAllAndConsole(message);
 
+            }
+        } catch (RuntimeException e) {
+            Constants.createErrorLog("Error handling player join event for " + player.getName().getString(), e);
         }
     }
 
@@ -39,8 +43,12 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
     }
 
     public static void loginLogoutEvent(ServerPlayer player, String messageFormat) {
-        messageFormat = Formatter.getChatComponent(player, messageFormat);
-        Component message = Formatter.getMessageComponent(messageFormat);
-        ServerUtil.sendToAllAndConsole(message);
+        try {
+            messageFormat = Formatter.getChatComponent(player, messageFormat);
+            Component message = Formatter.getMessageComponent(messageFormat);
+            ServerUtil.sendToAllAndConsole(message);
+        } catch (RuntimeException e) {
+            Constants.createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
+        }
     }
 }

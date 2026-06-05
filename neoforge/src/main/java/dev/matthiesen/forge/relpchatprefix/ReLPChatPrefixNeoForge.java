@@ -21,7 +21,7 @@ public class ReLPChatPrefixNeoForge {
             ReLPChatPrefix.onServerChat(event.getPlayer(), event.getRawText());
             event.setCanceled(true);
         } catch (Exception e) {
-            Constants.createErrorLog("Error processing chat message: " + e);
+            Constants.createErrorLog("Error processing chat message: " + e, e);
         }
     }
 }

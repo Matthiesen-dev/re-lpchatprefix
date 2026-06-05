@@ -8,6 +8,7 @@ import dev.matthiesen.common.relpchatprefix.config.ModConfig;
 import dev.matthiesen.common.relpchatprefix.config.ReLpChatPrefixConfigManager;
 import dev.matthiesen.common.relpchatprefix.events.PlayerEvents;
 import dev.matthiesen.common.relpchatprefix.events.ServerEvents;
+import dev.matthiesen.common.relpchatprefix.util.MetricManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +21,7 @@ public class ReLPChatPrefix {
 
     public static void initialize() {
         CONFIG_MANAGER.loadConfig();
+        MetricManager.init();
         AdventureCompat.init();
 
         // TODO: Make this configurable once this mod supports other parsers
