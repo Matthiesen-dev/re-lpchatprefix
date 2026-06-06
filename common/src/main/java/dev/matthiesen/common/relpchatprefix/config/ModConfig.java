@@ -44,6 +44,7 @@ public class ModConfig {
         public boolean enable = false;
     }
 
+    @SuppressWarnings("unused")
     public static final Gson GSON = new GsonBuilder()
             .disableHtmlEscaping()
             .setPrettyPrinting()
