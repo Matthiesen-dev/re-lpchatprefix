@@ -35,7 +35,7 @@ modId = "luckperms"
 mandatory = true
 versionRange = "[5.4,)"
 ordering = "NONE"
-side = "BOTH"
+side = "SERVER"
 
 [[dependencies.${mod_id}]]
 modId = "matthiesen_lib_api"
