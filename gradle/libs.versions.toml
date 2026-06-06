@@ -9,8 +9,10 @@ publish = "0.35.0"
 matthiesen_lib = "1.5.5"
 sponge-mixin = "0.8.5"
 luckperms = "5.4"
+luckperms-mod = "dKAPoPGd" # v5.4.150 NeoForge (https://modrinth.com/plugin/luckperms/version/v5.4.150-neoforge)
 mixinextras = "0.4.1"
 adventure-mod = "6.0.0"
+adventure-api = "4.17.0"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -27,18 +29,25 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 minecraft-net = { group = "net.minecraft", name = "minecraft", version.ref = "minecraft" }
 neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge" }
 luckperms-api = { group = "net.luckperms", name = "api", version.ref = "luckperms" }
+luckperms-mod = { group = "maven.modrinth", name = "luckperms", version.ref = "luckperms-mod" }
 matthiesen-lib-api-common = { group = "dev.matthiesen", name = "matthiesen-lib-api-common", version.ref = "matthiesen_lib" }
 matthiesen-lib-api-neoforge = { group = "dev.matthiesen", name = "matthiesen-lib-api-neoforge", version.ref = "matthiesen_lib" }
 sponge-mixin = { group = "org.spongepowered", name = "mixin", version.ref = "sponge-mixin" }
 mixinextras = { group = "io.github.llamalad7", name = "mixinextras-neoforge", version.ref = "mixinextras" }
 adventure-mod-shared = { group = "net.kyori", name = "adventure-platform-mod-shared", version.ref = "adventure-mod" }
 adventure-mod-neoforge = { group = "net.kyori", name = "adventure-platform-neoforge", version.ref = "adventure-mod" }
+adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure-api" }
+minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-api" }
+text-serializer = { group = "net.kyori", name = "adventure-text-serializer-json", version.ref = "adventure-api" }
 
 [bundles]
 commonCompileOnly = ["luckperms-api", "sponge-mixin", "mixinextras"]
+commonImplementation = ["minimessage", "text-serializer"]
 commonModCompileOnly = ["adventure-mod-shared"]
 commonModImplementationNoTransitive = ["matthiesen-lib-api-common"]
 
+neoforgeImplementation = ["adventure-api"]
 neoforgeCompileOnly = ["luckperms-api"]
-neoforgeModImplementationInclude = ["adventure-mod-neoforge"]
+neoforgeRuntimeOnly = ["luckperms-mod"]
+neoforgeImplementationInclude = ["adventure-mod-neoforge"]
 neoforgeModImplementationNoTransitive = ["matthiesen-lib-api-neoforge"]

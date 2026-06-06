@@ -27,10 +27,12 @@ dependencies {
     mappings(loom.officialMojangMappings())
     neoForge(libs.neoforge)
     compileOnly(libs.bundles.neoforgeCompileOnly)
+    runtimeOnly(libs.bundles.neoforgeRuntimeOnly)
+    implementation(libs.bundles.neoforgeImplementation)
     modImplementation(libs.bundles.neoforgeModImplementationNoTransitive) { isTransitive = false }
 
-    libs.bundles.neoforgeModImplementationInclude.get().forEach { dependency ->
-        modImplementation(dependency.copy())
+    libs.bundles.neoforgeImplementationInclude.get().forEach { dependency ->
+        implementation(dependency.copy())
         include(dependency.copy())
     }
 

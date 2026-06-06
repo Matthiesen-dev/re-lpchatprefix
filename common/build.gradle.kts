@@ -13,6 +13,7 @@ dependencies {
     mappings(loom.officialMojangMappings())
     compileOnly(libs.bundles.commonCompileOnly)
     modCompileOnly(libs.bundles.commonModCompileOnly)
+    implementation(libs.bundles.commonImplementation)
     modImplementation(libs.bundles.commonModImplementationNoTransitive) { isTransitive = false }
 }
 
