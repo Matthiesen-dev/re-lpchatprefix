@@ -43,3 +43,11 @@ mandatory = true
 versionRange = "[1.9.0,)"
 ordering = "AFTER"
 side = "SERVER"
+
+[[dependencies.${mod_id}]]
+modId = "emberstextapi"
+type = "optional"
+mandatory = false
+versionRange = "[3.0.0)"
+ordering = "AFTER"
+side = "BOTH"
