@@ -40,7 +40,7 @@ side = "SERVER"
 [[dependencies.${mod_id}]]
 modId = "matthiesen_lib_api"
 mandatory = true
-versionRange = "[1.9.0,)"
+versionRange = "[1.9.1,)"
 ordering = "AFTER"
 side = "SERVER"
 
