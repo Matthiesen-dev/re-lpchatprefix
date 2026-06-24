@@ -8,6 +8,9 @@ public class ModConfig {
     @SerializedName("mainConfig")
     public MainConfig mainConfig = new MainConfig();
 
+    @SerializedName("textParser")
+    public String textParser = "adventure";
+
     public static class MainConfig {
         @SerializedName("enablePrefix")
         public boolean enablePrefix = true;
