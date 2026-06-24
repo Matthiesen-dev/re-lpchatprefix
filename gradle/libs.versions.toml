@@ -6,13 +6,14 @@ architectury-plugin = "3.4-SNAPSHOT"
 minecraft = "1.21.1"
 neoforge = "21.1.182"
 publish = "0.35.0"
-matthiesen_lib = "1.5.5"
+matthiesen_lib = "1.9.0"
 sponge-mixin = "0.8.5"
 luckperms = "5.4"
 luckperms-mod = "dKAPoPGd" # v5.4.150 NeoForge (https://modrinth.com/plugin/luckperms/version/v5.4.150-neoforge)
 mixinextras = "0.4.1"
 adventure-mod = "6.0.0"
 adventure-api = "4.17.0"
+emberstextapi_version = "3.0.0"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -39,6 +40,8 @@ adventure-mod-neoforge = { group = "net.kyori", name = "adventure-platform-neofo
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure-api" }
 minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-api" }
 text-serializer = { group = "net.kyori", name = "adventure-text-serializer-json", version.ref = "adventure-api" }
+
+emberstextapiNeoForge = { group = "net.tysontheember.emberstextapi", name = "emberstextapi-neoforge-1.21.1", version.ref = "emberstextapi_version" }
 
 [bundles]
 commonCompileOnly = ["luckperms-api", "sponge-mixin", "mixinextras"]

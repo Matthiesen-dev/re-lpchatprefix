@@ -36,6 +36,10 @@ dependencies {
         include(dependency.copy())
     }
 
+    // Ember's Text API (Optional Dep)
+    modCompileOnly(libs.emberstextapiNeoForge)
+    modRuntimeOnly(libs.emberstextapiNeoForge)
+
     implementation(project(":common", configuration = "namedElements"))
     "developmentNeoForge"(project(":common", configuration = "namedElements")) {
         isTransitive = false
