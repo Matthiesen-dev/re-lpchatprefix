@@ -1,5 +1,6 @@
 package dev.matthiesen.relpchatprefix.common.util;
 
+import dev.matthiesen.matthiesen_core.common.core.permissions.LuckPermsHelper;
 import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
 import dev.matthiesen.relpchatprefix.common.config.ModConfig;
 import net.luckperms.api.LuckPerms;
@@ -90,13 +91,13 @@ public final class Formatter {
     }
 
     public static String getChatComponent(ServerPlayer player, String messageFormat) {
-        LuckPerms luckPerms = ReLPChatPrefix.INSTANCE.getLuckPerms();
+        LuckPerms luckPerms = LuckPermsHelper.INSTANCE.getLuckPerms();
 
         if (luckPerms == null) {
             return null;
         }
 
-        User user = luckPerms.getUserManager().getUser(player.getUUID());
+        User user = LuckPermsHelper.INSTANCE.getUser(player.getUUID());
         if (user == null) {
             ReLPChatPrefix.INSTANCE.createWarnLog("User data not found for: " + player.getName().getString());
             return null;

@@ -10,8 +10,6 @@ import dev.matthiesen.relpchatprefix.common.compat.AdventureCompat;
 import dev.matthiesen.relpchatprefix.common.config.ModConfig;
 import dev.matthiesen.relpchatprefix.common.events.PlayerEvents;
 import dev.matthiesen.relpchatprefix.common.events.ServerEvents;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +24,6 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     private static final ConfigManager<ModConfig> CONFIG_MANAGER =
             INSTANCE.createConfigManager(ModConfig.class, "config");
-    private static volatile LuckPerms luckPerms;
     private static TextParser textParser;
 
     private static final List<String> availableTextParsers = List.of(
@@ -96,18 +93,5 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     public ModConfig getConfig() {
         return CONFIG_MANAGER.getConfig();
-    }
-
-    public LuckPerms getLuckPerms() {
-        if (luckPerms == null) {
-            try {
-                luckPerms = LuckPermsProvider.get();
-                createInfoLog("LuckPerms API loaded successfully");
-            } catch (IllegalStateException e) {
-                createErrorLog("LuckPerms not available, chat prefix will not be applied");
-                return null;
-            }
-        }
-        return luckPerms;
     }
 }
