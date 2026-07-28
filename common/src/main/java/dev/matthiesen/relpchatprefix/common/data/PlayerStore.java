@@ -1,4 +1,4 @@
-package dev.matthiesen.common.relpchatprefix.data;
+package dev.matthiesen.relpchatprefix.common.data;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerStore extends SavedData {
+public final class PlayerStore extends SavedData {
     private final Map<String, Integer> playerStore = new HashMap<>();
 
     public PlayerStore() {}

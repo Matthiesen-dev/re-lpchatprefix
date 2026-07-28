@@ -1,30 +1,26 @@
-package dev.matthiesen.common.relpchatprefix.events;
+package dev.matthiesen.relpchatprefix.common.events;
 
-import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
-import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibPlayerEventHandler;
-import dev.matthiesen.common.matthiesen_lib_api.utility.ServerMessagingUtil;
-import dev.matthiesen.common.relpchatprefix.Constants;
-import dev.matthiesen.common.relpchatprefix.ReLPChatPrefix;
-import dev.matthiesen.common.relpchatprefix.config.ModConfig;
-import dev.matthiesen.common.relpchatprefix.data.PlayerStore;
-import dev.matthiesen.common.relpchatprefix.util.Formatter;
+import dev.matthiesen.matthiesen_core.common.utility.chat.ServerMessagingUtil;
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
+import dev.matthiesen.relpchatprefix.common.config.ModConfig;
+import dev.matthiesen.relpchatprefix.common.data.PlayerStore;
+import dev.matthiesen.relpchatprefix.common.util.Formatter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
-public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
+public final class PlayerEvents {
     public static final PlayerEvents INSTANCE = new PlayerEvents();
 
-    @Override
     public void onPlayerJoin(ServerPlayer player) {
-        ModConfig config = ReLPChatPrefix.getConfig();
+        ModConfig config = ReLPChatPrefix.INSTANCE.getConfig();
         loginLogoutEvent(player, config.chatOverrides.joinMessage);
 
         try {
-            MinecraftServer server = MatthiesenLibApi.getMinecraftServer();
+            MinecraftServer server = ReLPChatPrefix.INSTANCE.getCommonUtils().getServer();
             ServerLevel level = server.overworld();
-            PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, Constants.MOD_ID);
+            PlayerStore store = level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, ReLPChatPrefix.MOD_ID);
             String playerUUID = player.getStringUUID();
 
             if (!store.hasBeenSeen(playerUUID)) {
@@ -36,13 +32,12 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
 
             }
         } catch (RuntimeException e) {
-            Constants.createErrorLog("Error handling player join event for " + player.getName().getString(), e);
+            ReLPChatPrefix.INSTANCE.createErrorLog("Error handling player join event for " + player.getName().getString(), e);
         }
     }
 
-    @Override
     public void onPlayerLeave(ServerPlayer player) {
-        loginLogoutEvent(player, ReLPChatPrefix.getConfig().chatOverrides.leaveMessage);
+        loginLogoutEvent(player, ReLPChatPrefix.INSTANCE.getConfig().chatOverrides.leaveMessage);
     }
 
     public void loginLogoutEvent(ServerPlayer player, String messageFormat) {
@@ -51,11 +46,7 @@ public class PlayerEvents implements MatthiesenLibPlayerEventHandler {
             Component message = Formatter.getMessageComponent(messageFormat);
             ServerMessagingUtil.sendToAllAndConsole(message);
         } catch (RuntimeException e) {
-            Constants.createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
+            ReLPChatPrefix.INSTANCE.createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
         }
-    }
-
-    public static PlayerEvents getInstance() {
-        return INSTANCE;
     }
 }

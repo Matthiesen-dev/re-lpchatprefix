@@ -1,4 +1,4 @@
-package dev.matthiesen.common.relpchatprefix.mixin;
+package dev.matthiesen.relpchatprefix.common.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.network.chat.Component;

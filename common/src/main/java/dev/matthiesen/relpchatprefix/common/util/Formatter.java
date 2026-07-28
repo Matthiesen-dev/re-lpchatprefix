@@ -1,8 +1,7 @@
-package dev.matthiesen.common.relpchatprefix.util;
+package dev.matthiesen.relpchatprefix.common.util;
 
-import dev.matthiesen.common.relpchatprefix.Constants;
-import dev.matthiesen.common.relpchatprefix.ReLPChatPrefix;
-import dev.matthiesen.common.relpchatprefix.config.ModConfig;
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
+import dev.matthiesen.relpchatprefix.common.config.ModConfig;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
@@ -12,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Formatter {
+public final class Formatter {
     public static ChatFormatting getChatColor(String color) {
         color = color.toLowerCase();
         return switch (color) {
@@ -33,7 +32,7 @@ public class Formatter {
             case "yellow" -> ChatFormatting.YELLOW;
             case "white" -> ChatFormatting.WHITE;
             default -> {
-                Constants.createErrorLog("Unknown Color value used: " + color);
+                ReLPChatPrefix.INSTANCE.createErrorLog("Unknown Color value used: " + color);
                 yield ChatFormatting.WHITE;
             }
         };
@@ -45,7 +44,7 @@ public class Formatter {
         String prefix = meta.getPrefix();
         String suffix = meta.getSuffix();
 
-        ModConfig config = ReLPChatPrefix.getConfig();
+        ModConfig config = ReLPChatPrefix.INSTANCE.getConfig();
 
         if (!config.mainConfig.enablePrefix) prefix = null;
         if (!config.mainConfig.enableSuffix) suffix = null;
@@ -79,7 +78,7 @@ public class Formatter {
     }
 
     public static Component getMessageComponent(String playerMessage, @Nullable Component textAddition) {
-        Component playerComponent = ReLPChatPrefix.getTextParser().parse(playerMessage);
+        Component playerComponent = ReLPChatPrefix.INSTANCE.getTextParser().parse(playerMessage);
         if (textAddition == null) return playerComponent;
         return Component.empty().append(playerComponent).append(textAddition);
     }
@@ -91,7 +90,7 @@ public class Formatter {
     }
 
     public static String getChatComponent(ServerPlayer player, String messageFormat) {
-        LuckPerms luckPerms = ReLPChatPrefix.getLuckPerms();
+        LuckPerms luckPerms = ReLPChatPrefix.INSTANCE.getLuckPerms();
 
         if (luckPerms == null) {
             return null;
@@ -99,7 +98,7 @@ public class Formatter {
 
         User user = luckPerms.getUserManager().getUser(player.getUUID());
         if (user == null) {
-            Constants.LOGGER.debug("User data not found for: {}", player.getName().getString());
+            ReLPChatPrefix.INSTANCE.createWarnLog("User data not found for: " + player.getName().getString());
             return null;
         }
 

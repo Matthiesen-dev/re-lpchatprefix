@@ -11,7 +11,6 @@ authors = "${mod_author}"
 description = '''
 ${mod_description}
 '''
-#logoFile = ""
 
 [[mixins]]
 config = "relpchatprefix.mixins.json"
@@ -38,9 +37,9 @@ ordering = "NONE"
 side = "SERVER"
 
 [[dependencies.${mod_id}]]
-modId = "matthiesen_lib_api"
+modId = "matthiesen_core"
 mandatory = true
-versionRange = "[1.9.1,)"
+versionRange = "[1.0.0-beta.13,)"
 ordering = "AFTER"
 side = "SERVER"
 
@@ -48,6 +47,6 @@ side = "SERVER"
 modId = "emberstextapi"
 type = "optional"
 mandatory = false
-versionRange = "[3.0.0)"
+versionRange = "[3.0.0,)"
 ordering = "AFTER"
 side = "BOTH"

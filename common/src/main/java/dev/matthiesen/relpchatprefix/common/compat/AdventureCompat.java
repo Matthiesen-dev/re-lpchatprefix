@@ -1,24 +1,23 @@
-package dev.matthiesen.common.relpchatprefix.compat;
+package dev.matthiesen.relpchatprefix.common.compat;
 
-import dev.matthiesen.common.matthiesen_lib_api.MatthiesenLibApi;
-import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibTextParser;
-import dev.matthiesen.common.relpchatprefix.Constants;
+import dev.matthiesen.matthiesen_core.common.api.text_parsers.TextParser;
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 
-public class AdventureCompat {
+public final class AdventureCompat {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     public static void init() {
-        MatthiesenLibApi.registerTextParser(createAdventureTextParser());
+        ReLPChatPrefix.INSTANCE.getTextParserManager().registerTextParser(createAdventureTextParser());
     }
 
-    private static MatthiesenLibTextParser createAdventureTextParser() {
-        return new MatthiesenLibTextParser() {
+    private static TextParser createAdventureTextParser() {
+        return new TextParser() {
             @Override
-            public String getType() {
+            public String type() {
                 return "adventure";
             }
 
@@ -29,14 +28,14 @@ public class AdventureCompat {
                     var json = JSONComponentSerializer.json().serialize(adventureComponent);
                     return Component.Serializer.fromJson(json, RegistryAccess.EMPTY);
                 } catch (RuntimeException e) {
-                    Constants.createErrorLog("Failed to parse text with Adventure parser: " + text, e);
+                    ReLPChatPrefix.INSTANCE.createErrorLog("Failed to parse text with Adventure parser: " + text, e);
                     return Component.literal(text);
                 }
             }
         };
     }
 
-    public static MatthiesenLibTextParser getParser() {
-        return MatthiesenLibApi.getTextParser("adventure");
+    public static TextParser getParser() {
+        return ReLPChatPrefix.INSTANCE.getTextParserManager().getTextParser("adventure");
     }
 }

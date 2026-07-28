@@ -6,7 +6,7 @@ architectury-plugin = "3.4-SNAPSHOT"
 minecraft = "1.21.1"
 neoforge = "21.1.182"
 publish = "0.35.0"
-matthiesen_lib = "1.9.1"
+matthiesen_core = "1.0.0-beta.13"
 sponge-mixin = "0.8.5"
 luckperms = "5.4"
 luckperms-mod = "dKAPoPGd" # v5.4.150 NeoForge (https://modrinth.com/plugin/luckperms/version/v5.4.150-neoforge)
@@ -31,8 +31,8 @@ minecraft-net = { group = "net.minecraft", name = "minecraft", version.ref = "mi
 neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge" }
 luckperms-api = { group = "net.luckperms", name = "api", version.ref = "luckperms" }
 luckperms-mod = { group = "maven.modrinth", name = "luckperms", version.ref = "luckperms-mod" }
-matthiesen-lib-api-common = { group = "dev.matthiesen", name = "matthiesen-lib-api-common", version.ref = "matthiesen_lib" }
-matthiesen-lib-api-neoforge = { group = "dev.matthiesen", name = "matthiesen-lib-api-neoforge", version.ref = "matthiesen_lib" }
+matthiesen-core-common = { group = "dev.matthiesen", name = "matthiesen-core-common", version.ref = "matthiesen_core" }
+matthiesen-core-neoforge = { group = "dev.matthiesen", name = "matthiesen-core-neoforge", version.ref = "matthiesen_core" }
 sponge-mixin = { group = "org.spongepowered", name = "mixin", version.ref = "sponge-mixin" }
 mixinextras = { group = "io.github.llamalad7", name = "mixinextras-neoforge", version.ref = "mixinextras" }
 adventure-mod-shared = { group = "net.kyori", name = "adventure-platform-mod-shared", version.ref = "adventure-mod" }
@@ -40,17 +40,16 @@ adventure-mod-neoforge = { group = "net.kyori", name = "adventure-platform-neofo
 adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "adventure-api" }
 minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-api" }
 text-serializer = { group = "net.kyori", name = "adventure-text-serializer-json", version.ref = "adventure-api" }
-
 emberstextapiNeoForge = { group = "net.tysontheember.emberstextapi", name = "emberstextapi-neoforge-1.21.1", version.ref = "emberstextapi_version" }
 
 [bundles]
 commonCompileOnly = ["luckperms-api", "sponge-mixin", "mixinextras"]
 commonImplementation = ["minimessage", "text-serializer"]
 commonModCompileOnly = ["adventure-mod-shared"]
-commonModImplementationNoTransitive = ["matthiesen-lib-api-common"]
+commonModImplementationNoTransitive = ["matthiesen-core-common"]
 
 neoforgeImplementation = ["adventure-api"]
 neoforgeCompileOnly = ["luckperms-api"]
 neoforgeRuntimeOnly = ["luckperms-mod"]
 neoforgeImplementationInclude = ["adventure-mod-neoforge"]
-neoforgeModImplementationNoTransitive = ["matthiesen-lib-api-neoforge"]
+neoforgeModImplementationNoTransitive = ["matthiesen-core-neoforge"]

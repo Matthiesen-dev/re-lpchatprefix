@@ -1,10 +1,8 @@
-package dev.matthiesen.common.relpchatprefix.config;
+package dev.matthiesen.relpchatprefix.common.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
-public class ModConfig {
+public final class ModConfig {
     @SerializedName("mainConfig")
     public MainConfig mainConfig = new MainConfig();
 
@@ -46,10 +44,4 @@ public class ModConfig {
         @SerializedName("enable")
         public boolean enable = false;
     }
-
-    @SuppressWarnings("unused")
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
 }

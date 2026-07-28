@@ -1,7 +1,7 @@
 # Re LPChatPrefix
 
 <div>
-  <img src="https://mods.matthiesen.dev/badges/matthiesenLibAPI.svg" alt="Matthiesen Lib API">
+  <img src="https://mods.matthiesen.dev/badges/matthiesenCore.svg" alt="Matthiesen Core">
   <img src="https://mods.matthiesen.dev/badges/luckperms.svg" alt="Luckperms">
 </div>
 
@@ -11,7 +11,7 @@ in your chat messages and join/leave messages with Adventure's MiniMessage suppo
 ## Requirements
 
 - NeoForge 1.21.1
-- [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
+- [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
 - [Luckperms 5.4](https://modrinth.com/mod/luckperms)
 
 ### Included Mods
@@ -38,7 +38,7 @@ how this mod is being used and improve it over time. You can learn more about th
 
 You can also view the data collected by this mod on the [FastStats: Re LPChatPrefix](https://faststats.dev/project/re-lpchatprefix) page.
 
-To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_lib_api/metrics.properties` file.
+To opt out of this data collection, set the `enabled` property to `false` in the `<game_directory>/config/matthiesen_core/metrics.properties` file.
 
 ## License
 

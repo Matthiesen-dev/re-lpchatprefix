@@ -19,15 +19,15 @@ env:
   MODRINTH_DEPENDENCIES: |-
     [
       {"project_id":"Vebnzrzj","dependency_type":"required"},
-      {"project_id":"j2JrSWnx","dependency_type":"required"},
+      {"project_id":"sqEZOmQo","dependency_type":"required"},
       {"project_id":"OVSg4uGN","dependency_type":"optional"}
     ]
   DISCORD_ICON_URL: "https://raw.githubusercontent.com/Matthiesen-dev/.github/refs/heads/main/logo-transparent.png"
 
 # The dependencies above correspond to:
 # - LuckPerms (Vebnzrzj)
-# - Matthiesen Lib API (j2JrSWnx)
-# - OVSg4uGN: Ember's Text API (optional)
+# - Matthiesen Core (sqEZOmQo)
+# - Ember's Text API (OVSg4uGN) (optional)
 
 jobs:
   prepare:
