@@ -9,7 +9,6 @@ import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
 import dev.matthiesen.relpchatprefix.common.config.ModConfig;
 import dev.matthiesen.relpchatprefix.common.events.PlayerEvents;
 import dev.matthiesen.relpchatprefix.common.events.ServerEvents;
-import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -48,14 +47,12 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
         PlatformEvents.SERVER_RELOAD.subscribe(event -> reload());
 
+        PlatformEvents.SERVER_CHAT.subscribe(ServerEvents::onServerChat);
+
         PlatformEvents.PLAYER_JOIN.subscribe(PlayerEvents::onPlayerJoin);
         PlatformEvents.PLAYER_LEAVE.subscribe(PlayerEvents::onPlayerLeave);
 
         createInfoLog("Initialized");
-    }
-
-    public void onServerChat(ServerPlayer player, String rawText) {
-        ServerEvents.onServerChat(player, rawText);
     }
 
     public TextParser getTextParser() {
