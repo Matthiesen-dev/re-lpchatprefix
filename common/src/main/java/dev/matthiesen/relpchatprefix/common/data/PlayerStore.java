@@ -1,7 +1,10 @@
 package dev.matthiesen.relpchatprefix.common.data;
 
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,4 +52,10 @@ public final class PlayerStore extends SavedData {
             PlayerStore::load, // Method to load data
             null
     );
+
+    public static PlayerStore getPlayerStore() {
+        MinecraftServer server = ReLPChatPrefix.INSTANCE.getCommonUtils().getServer();
+        ServerLevel level = server.overworld();
+        return level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, ReLPChatPrefix.MOD_ID);
+    }
 }

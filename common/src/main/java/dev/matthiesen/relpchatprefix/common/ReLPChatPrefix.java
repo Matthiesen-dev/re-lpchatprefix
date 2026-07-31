@@ -6,7 +6,6 @@ import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.BuiltInTextParsers;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.TextParser;
 import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
-import dev.matthiesen.relpchatprefix.common.compat.AdventureCompat;
 import dev.matthiesen.relpchatprefix.common.config.ModConfig;
 import dev.matthiesen.relpchatprefix.common.events.PlayerEvents;
 import dev.matthiesen.relpchatprefix.common.events.ServerEvents;
@@ -44,14 +43,13 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
     public void initialize() {
         super.initialize();
         CONFIG_MANAGER.loadConfig();
-        AdventureCompat.init();
 
         loadTextParserFromConfig();
 
         PlatformEvents.SERVER_RELOAD.subscribe(event -> reload());
 
-        PlatformEvents.PLAYER_JOIN.subscribe(event -> PlayerEvents.INSTANCE.onPlayerJoin(event.player()));
-        PlatformEvents.PLAYER_LEAVE.subscribe(event -> PlayerEvents.INSTANCE.onPlayerLeave(event.player()));
+        PlatformEvents.PLAYER_JOIN.subscribe(PlayerEvents::onPlayerJoin);
+        PlatformEvents.PLAYER_LEAVE.subscribe(PlayerEvents::onPlayerLeave);
 
         createInfoLog("Initialized");
     }
@@ -78,7 +76,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         }
 
         switch (parserName) {
-            case "adventure" -> textParser = AdventureCompat.getParser();
+            case "adventure" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.ADVENTURE);
             case "vanilla" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.VANILLA);
             case "emberstextapi" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.EMBERS);
             default -> throw new IllegalStateException("Unexpected value: " + parserName);
