@@ -60,6 +60,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
     }
 
     public void reload() {
+        ChatPrefixConfig.SERVER_CONFIG.textParser.clearCache();
         loadTextParserFromConfig();
         createInfoLog("Configuration and Text Parser reloaded");
     }
