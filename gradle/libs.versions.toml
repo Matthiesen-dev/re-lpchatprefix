@@ -6,7 +6,7 @@ architectury-plugin = "3.4-SNAPSHOT"
 minecraft = "1.21.1"
 neoforge = "21.1.182"
 publish = "0.35.0"
-matthiesen_core = "1.0.0-beta.23"
+matthiesen_core = "1.0.0-beta.38"
 sponge-mixin = "0.8.5"
 luckperms = "5.4"
 luckperms-mod = "dKAPoPGd" # v5.4.150 NeoForge (https://modrinth.com/plugin/luckperms/version/v5.4.150-neoforge)
@@ -14,6 +14,7 @@ mixinextras = "0.4.1"
 adventure-mod = "6.0.0"
 adventure-api = "4.17.0"
 emberstextapi_version = "3.0.0"
+forge-config-api-port = "21.1.6"
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
@@ -41,9 +42,10 @@ adventure-api = { group = "net.kyori", name = "adventure-api", version.ref = "ad
 minimessage = { group = "net.kyori", name = "adventure-text-minimessage", version.ref = "adventure-api" }
 text-serializer = { group = "net.kyori", name = "adventure-text-serializer-json", version.ref = "adventure-api" }
 emberstextapiNeoForge = { group = "net.tysontheember.emberstextapi", name = "emberstextapi-neoforge-1.21.1", version.ref = "emberstextapi_version" }
+forge-config-api-port-common = { group = "fuzs.forgeconfigapiport", name = "forgeconfigapiport-common-neoforgeapi", version.ref = "forge-config-api-port" }
 
 [bundles]
-commonCompileOnly = ["luckperms-api", "sponge-mixin", "mixinextras"]
+commonCompileOnly = ["luckperms-api", "sponge-mixin", "mixinextras", "forge-config-api-port-common"]
 commonImplementation = ["minimessage", "text-serializer"]
 commonModCompileOnly = ["adventure-mod-shared"]
 commonModImplementationNoTransitive = ["matthiesen-core-common"]

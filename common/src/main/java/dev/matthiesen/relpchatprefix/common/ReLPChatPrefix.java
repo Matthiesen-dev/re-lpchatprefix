@@ -3,15 +3,13 @@ package dev.matthiesen.relpchatprefix.common;
 import dev.matthiesen.libs.faststats.Token;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
+import dev.matthiesen.matthiesen_core.common.api.platform.loader.ModConfigType;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.BuiltInTextParsers;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.TextParser;
-import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
-import dev.matthiesen.relpchatprefix.common.config.ModConfig;
+import dev.matthiesen.relpchatprefix.common.config.ChatPrefixConfig;
 import dev.matthiesen.relpchatprefix.common.events.PlayerEvents;
 import dev.matthiesen.relpchatprefix.common.events.ServerEvents;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public final class ReLPChatPrefix extends AbstractCommonMod {
     public static final String MOD_ID = "relpchatprefix";
@@ -20,15 +18,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     public static final ReLPChatPrefix INSTANCE = new ReLPChatPrefix();
 
-    private static final ConfigManager<ModConfig> CONFIG_MANAGER =
-            INSTANCE.createConfigManager(ModConfig.class, "config");
     private static TextParser textParser;
-
-    private static final List<String> availableTextParsers = List.of(
-            "adventure",
-            "vanilla",
-            "emberstextapi"
-    );
 
     public ReLPChatPrefix() {
         super(MOD_ID, MOD_NAME);
@@ -41,14 +31,11 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     public void initialize() {
         super.initialize();
-        CONFIG_MANAGER.loadConfig();
+        registerModConfig(MOD_ID, ModConfigType.SERVER, ChatPrefixConfig.SERVER_SPEC, "relpchatprefix/server.toml");
 
-        loadTextParserFromConfig();
-
+        PlatformEvents.SERVER_STARTED.subscribe(event -> loadTextParserFromConfig());
         PlatformEvents.SERVER_RELOAD.subscribe(event -> reload());
-
         PlatformEvents.SERVER_CHAT.subscribe(ServerEvents::onServerChat);
-
         PlatformEvents.PLAYER_JOIN.subscribe(PlayerEvents::onPlayerJoin);
         PlatformEvents.PLAYER_LEAVE.subscribe(PlayerEvents::onPlayerLeave);
 
@@ -63,30 +50,17 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
     }
 
     public void loadTextParserFromConfig() {
-        var config = CONFIG_MANAGER.getConfig();
-        var parserName = config.textParser;
-        if (!availableTextParsers.contains(parserName)) {
-            createErrorLog("Invalid text parser specified in config: " + parserName);
-            createErrorLog("Available text parsers: " + String.join(", ", availableTextParsers));
-            createInfoLog("Defaulting to 'adventure' text parser.");
-            parserName = "adventure";
-        }
-
+        var parserName = ChatPrefixConfig.SERVER_CONFIG.textParser.get();
         switch (parserName) {
-            case "adventure" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.ADVENTURE);
-            case "vanilla" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.VANILLA);
-            case "emberstextapi" -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.EMBERS);
+            case BuiltInTextParsers.ADVENTURE -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.ADVENTURE);
+            case BuiltInTextParsers.VANILLA -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.VANILLA);
+            case BuiltInTextParsers.EMBERS -> textParser = getTextParserManager().getTextParser(BuiltInTextParsers.EMBERS);
             default -> throw new IllegalStateException("Unexpected value: " + parserName);
         }
     }
 
     public void reload() {
-        CONFIG_MANAGER.loadConfig();
         loadTextParserFromConfig();
         createInfoLog("Configuration and Text Parser reloaded");
-    }
-
-    public ModConfig getConfig() {
-        return CONFIG_MANAGER.getConfig();
     }
 }

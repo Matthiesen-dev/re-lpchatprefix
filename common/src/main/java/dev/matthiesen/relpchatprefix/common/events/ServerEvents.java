@@ -3,7 +3,7 @@ package dev.matthiesen.relpchatprefix.common.events;
 import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
 import dev.matthiesen.matthiesen_core.common.utility.chat.ServerMessagingUtil;
 import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
-import dev.matthiesen.relpchatprefix.common.config.ModConfig;
+import dev.matthiesen.relpchatprefix.common.config.ChatPrefixConfig;
 import dev.matthiesen.relpchatprefix.common.util.Formatter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,9 +13,8 @@ public final class ServerEvents {
         ServerPlayer player = event.player();
         String rawText = event.message();
         try {
-            ModConfig config = ReLPChatPrefix.INSTANCE.getConfig();
-            String messageFormat = Formatter.getChatComponent(player, config.mainConfig.messageFormat);
-            Component messageComponent = Formatter.processUserMessage(rawText, config.mainConfig.messageColor);
+            String messageFormat = Formatter.getChatComponent(player, ChatPrefixConfig.SERVER_CONFIG.messageFormat.get());
+            Component messageComponent = Formatter.processUserMessage(rawText, ChatPrefixConfig.SERVER_CONFIG.messageColor.get());
             Component finalComponent = Formatter.getMessageComponent(messageFormat, messageComponent);
             ServerMessagingUtil.sendToAllAndConsole(finalComponent);
             return true;
