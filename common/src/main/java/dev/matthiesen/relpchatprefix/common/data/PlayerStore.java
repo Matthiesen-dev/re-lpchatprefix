@@ -1,14 +1,17 @@
-package dev.matthiesen.common.relpchatprefix.data;
+package dev.matthiesen.relpchatprefix.common.data;
 
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlayerStore extends SavedData {
+public final class PlayerStore extends SavedData {
     private final Map<String, Integer> playerStore = new HashMap<>();
 
     public PlayerStore() {}
@@ -49,4 +52,10 @@ public class PlayerStore extends SavedData {
             PlayerStore::load, // Method to load data
             null
     );
+
+    public static PlayerStore getPlayerStore() {
+        MinecraftServer server = ReLPChatPrefix.INSTANCE.getCommonUtils().getServer();
+        ServerLevel level = server.overworld();
+        return level.getDataStorage().computeIfAbsent(PlayerStore.FACTORY, ReLPChatPrefix.MOD_ID);
+    }
 }
