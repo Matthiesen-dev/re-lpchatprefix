@@ -40,18 +40,12 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         super.initialize();
         registerModConfig(MOD_ID, ModConfigType.SERVER, ChatPrefixConfig.SERVER_SPEC);
 
-        PlatformEvents.SERVER_STARTED.subscribe(event -> {
-            isServerRunning = true;
-            loadTextParserFromConfig();
-        });
-        PlatformEvents.SERVER_RELOAD.subscribe(event -> {
-            if (!isServerRunning) return;
-            reload();
-        });
+        PlatformEvents.SERVER_STARTED.subscribe(this::onServerStarted);
+        PlatformEvents.SERVER_RELOAD.subscribe(this::onServerReload);
         PlatformEvents.SERVER_CHAT.subscribe(this::onServerChat);
         PlatformEvents.PLAYER_JOIN.subscribe(this::onPlayerJoin);
         PlatformEvents.PLAYER_LEAVE.subscribe(this::onPlayerLeave);
-        PlatformEvents.SERVER_STOPPING.subscribe(event -> isServerRunning = false);
+        PlatformEvents.SERVER_STOPPING.subscribe(this::onServerStopping);
 
         createInfoLog("Initialized");
     }
@@ -73,7 +67,18 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         }
     }
 
-    public void reload() {
+    public void onServerStarted(ServerEvent.Started event) {
+        createInfoLog("Loading Re-LPChatPrefix configuration and text parser");
+        isServerRunning = true;
+        loadTextParserFromConfig();
+    }
+
+    public void onServerStopping(ServerEvent.Stopping event) {
+        isServerRunning = false;
+    }
+
+    public void onServerReload(ServerEvent.Reload event) {
+        if (!isServerRunning) return;
         ChatPrefixConfig.SERVER_CONFIG.textParser.clearCache();
         loadTextParserFromConfig();
         createInfoLog("Configuration and Text Parser reloaded");

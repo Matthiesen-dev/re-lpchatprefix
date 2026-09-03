@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[1,)"
-#issueTrackerURL = "A valid URL to your issue tracker where people can open bug tickets"
+issueTrackerURL = "https://github.com/Matthiesen-dev/re-lpchatprefix/issues"
 license = "${mod_license}"
 
 [[mods]]
@@ -39,7 +39,7 @@ side = "SERVER"
 [[dependencies.${mod_id}]]
 modId = "matthiesen_core"
 mandatory = true
-versionRange = "[1.0.0-beta.38,)"
+versionRange = "[1.2.7,)"
 ordering = "AFTER"
 side = "SERVER"
 
