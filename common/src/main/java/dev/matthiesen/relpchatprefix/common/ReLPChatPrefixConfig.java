@@ -1,10 +1,19 @@
-package dev.matthiesen.relpchatprefix.common.config;
+package dev.matthiesen.relpchatprefix.common;
 
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.BuiltInTextParsers;
 import net.minecraft.ChatFormatting;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import org.apache.commons.lang3.tuple.Pair;
 
-public final class ServerConfig {
+public final class ReLPChatPrefixConfig {
+    public static final ReLPChatPrefixConfig SERVER_CONFIG;
+    public static final ModConfigSpec SERVER_SPEC;
+
+    static {
+        Pair<ReLPChatPrefixConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ReLPChatPrefixConfig::new);
+        SERVER_CONFIG = specPair.getLeft();
+        SERVER_SPEC = specPair.getRight();
+    }
 
     // Main Configuration
     public ModConfigSpec.EnumValue<BuiltInTextParsers> textParser;
@@ -21,7 +30,7 @@ public final class ServerConfig {
     public ModConfigSpec.BooleanValue firstJoin_enable;
     public ModConfigSpec.ConfigValue<String> firstJoin_message;
 
-    public ServerConfig(ModConfigSpec.Builder builder) {
+    public ReLPChatPrefixConfig(ModConfigSpec.Builder builder) {
         builder.comment("Re-LPChatPrefix Configuration")
                 .translation("relpchatprefix.configuration.main")
                 .push("main");

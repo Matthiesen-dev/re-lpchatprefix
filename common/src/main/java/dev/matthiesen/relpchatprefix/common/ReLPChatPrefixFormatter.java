@@ -1,8 +1,6 @@
-package dev.matthiesen.relpchatprefix.common.util;
+package dev.matthiesen.relpchatprefix.common;
 
 import dev.matthiesen.matthiesen_core.common.core.permissions.LuckPermsHelper;
-import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
-import dev.matthiesen.relpchatprefix.common.config.ChatPrefixConfig;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
@@ -12,14 +10,14 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class Formatter {
+public final class ReLPChatPrefixFormatter {
     public static @NotNull String getChatMessageFormat(ServerPlayer player, User user, String messageFormat) {
         CachedMetaData meta = user.getCachedData().getMetaData();
 
         String prefix = meta.getPrefix();
         String suffix = meta.getSuffix();
 
-        var config = ChatPrefixConfig.SERVER_CONFIG;
+        var config = ReLPChatPrefixConfig.SERVER_CONFIG;
 
         if (!config.enablePrefix.getAsBoolean()) prefix = null;
         if (!config.enableSuffix.getAsBoolean()) suffix = null;
@@ -76,6 +74,6 @@ public final class Formatter {
             return null;
         }
 
-        return Formatter.getChatMessageFormat(player, user, messageFormat);
+        return ReLPChatPrefixFormatter.getChatMessageFormat(player, user, messageFormat);
     }
 }
