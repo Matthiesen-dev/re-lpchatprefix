@@ -2,8 +2,6 @@ package dev.matthiesen.relpchatprefix.common;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,9 +51,9 @@ public final class ReLPChatPrefixPlayerStore extends SavedData {
     );
 
     private static ReLPChatPrefixPlayerStore getPlayerStore() {
-        MinecraftServer server = ReLPChatPrefix.INSTANCE.getCommonUtils().getServer();
-        ServerLevel level = server.overworld();
-        return level.getDataStorage().computeIfAbsent(ReLPChatPrefixPlayerStore.FACTORY, ReLPChatPrefix.MOD_ID);
+        return ReLPChatPrefix.INSTANCE.getCommonUtils().getServer()
+                .overworld().getDataStorage()
+                .computeIfAbsent(ReLPChatPrefixPlayerStore.FACTORY, ReLPChatPrefix.MOD_ID);
     }
 
     private static volatile ReLPChatPrefixPlayerStore instance;
