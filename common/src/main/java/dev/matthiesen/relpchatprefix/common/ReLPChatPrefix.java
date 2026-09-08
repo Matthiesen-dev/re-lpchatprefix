@@ -64,9 +64,13 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
     }
 
     private void onServerStarted(ServerEvent.Started event) {
-        createInfoLog("Loading Re-LPChatPrefix configuration and text parser");
-        isServerRunning = true;
-        loadTextParserFromConfig();
+        try {
+            createInfoLog("Loading Re-LPChatPrefix configuration and text parser");
+            loadTextParserFromConfig();
+            isServerRunning = true;
+        } catch (RuntimeException e) {
+            createErrorLog("Error loading configuration and text parser", e);
+        }
     }
 
     private void onServerStopping(ServerEvent.Stopping event) {
@@ -75,9 +79,13 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     private void onServerReload(ServerEvent.Reload event) {
         if (!isServerRunning) return;
-        ReLPChatPrefixConfig.SERVER_CONFIG.textParser.clearCache();
-        loadTextParserFromConfig();
-        createInfoLog("Configuration and Text Parser reloaded");
+        try {
+            ReLPChatPrefixConfig.SERVER_CONFIG.textParser.clearCache();
+            loadTextParserFromConfig();
+            createInfoLog("Configuration and Text Parser reloaded");
+        } catch (RuntimeException e) {
+            createErrorLog("Error reloading configuration and text parser", e);
+        }
     }
 
     private boolean onServerChat(ServerEvent.Chat event) {
@@ -91,7 +99,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
             ServerMessagingUtil.sendToAllAndConsole(finalComponent);
             return true;
         } catch (RuntimeException e) {
-            ReLPChatPrefix.INSTANCE.createErrorLog("Error handling server chat event for " + player.getName().getString(), e);
+            createErrorLog("Error handling server chat event for " + player.getName().getString(), e);
             return false;
         }
     }
@@ -101,22 +109,6 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         ServerPlayer player = event.player();
         loginLogoutEvent(player, ReLPChatPrefixConfig.SERVER_CONFIG.chatOverrides_joinMessage.get());
         onFirstJoin(player);
-    }
-
-    private void onFirstJoin(ServerPlayer player) {
-        try {
-            if (!ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_enable.getAsBoolean()) return;
-
-            String playerUUID = player.getStringUUID();
-            if (ReLPChatPrefixPlayerStore.hasPlayerBeenSeen(playerUUID)) return;
-
-            ReLPChatPrefixPlayerStore.markPlayerAsSeen(playerUUID);
-            String loginFormat = ReLPChatPrefixFormatter.getChatComponent(player, ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_message.get());
-            Component message = ReLPChatPrefixFormatter.getMessageComponent(loginFormat);
-            ServerMessagingUtil.sendToAllAndConsole(message);
-        } catch (RuntimeException e) {
-            ReLPChatPrefix.INSTANCE.createErrorLog("Error handling first join event for " + player.getName().getString(), e);
-        }
     }
 
     private void onPlayerLeave(PlayerEvent.Leave event) {
@@ -131,7 +123,23 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
             Component message = ReLPChatPrefixFormatter.getMessageComponent(messageFormat);
             ServerMessagingUtil.sendToAllAndConsole(message);
         } catch (RuntimeException e) {
-            ReLPChatPrefix.INSTANCE.createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
+            createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
+        }
+    }
+
+    private void onFirstJoin(ServerPlayer player) {
+        try {
+            if (!ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_enable.getAsBoolean()) return;
+
+            String playerUUID = player.getStringUUID();
+            if (ReLPChatPrefixPlayerStore.hasPlayerBeenSeen(playerUUID)) return;
+
+            ReLPChatPrefixPlayerStore.markPlayerAsSeen(playerUUID);
+            String loginFormat = ReLPChatPrefixFormatter.getChatComponent(player, ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_message.get());
+            Component message = ReLPChatPrefixFormatter.getMessageComponent(loginFormat);
+            ServerMessagingUtil.sendToAllAndConsole(message);
+        } catch (RuntimeException e) {
+            createErrorLog("Error handling first join event for " + player.getName().getString(), e);
         }
     }
 }
