@@ -1,6 +1,7 @@
 package dev.matthiesen.relpchatprefix.common.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import dev.matthiesen.relpchatprefix.common.ReLPChatPrefix;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.server.players.PlayerList;
@@ -20,7 +21,6 @@ public abstract class DisableVanillaJoinLeaveMessagesMixin {
             )
     )
     public boolean disableVanillaJoinAndLeaveMessage(PlayerList instance, Component component, boolean bl) {
-        // Always returning false is bad and leads to other's changes being silently ignored, but is necessary here I guess...
-        return false;
+        return !ReLPChatPrefix.INSTANCE.initialized;
     }
 }
