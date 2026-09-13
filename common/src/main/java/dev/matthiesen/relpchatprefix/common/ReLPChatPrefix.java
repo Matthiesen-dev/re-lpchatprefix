@@ -31,6 +31,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
     }
 
     private boolean isServerRunning = false;
+    public boolean initialized = false;
 
     public void initialize() {
         super.initialize();
@@ -44,6 +45,7 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         PlatformEvents.SERVER_STOPPING.subscribe(this::onServerStopping);
 
         createInfoLog("Initialized");
+        initialized = true;
     }
 
     public TextParser getTextParser() {
