@@ -10,7 +10,7 @@ public final class ReLPChatPrefixNeoForge {
 
     public ReLPChatPrefixNeoForge() {
         if (FMLEnvironment.dist.isClient()) {
-            INSTANCE.createInfoLog("Skipping loading for NeoForge Mod Loader. (Client side note supported)");
+            INSTANCE.createInfoLog("Skipping loading for NeoForge Mod Loader. (Client side not supported)");
         } else {
             INSTANCE.createInfoLog("Loading for NeoForge Mod Loader");
             INSTANCE.initialize();
