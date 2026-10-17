@@ -32,6 +32,7 @@ Documentation for this mod can be found at [mods.matthiesen.dev](https://mods.ma
 | 1.21.1            | 1.x.x                   | 1.4.0+      |
 | 1.21.1            | 1.2.6+                  | 1.5.0+      |
 | 1.21.1            | 1.2.8+                  | 1.6.0+      |
+| 1.21.1            | 1.3.0+                  | 1.7.0+      |
 
 > Before `v1.4.0`, this mod relied on [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api) for it's API's, which has since been replaced by [Matthiesen Core](https://modrinth.com/mod/matthiesen-core).
 
