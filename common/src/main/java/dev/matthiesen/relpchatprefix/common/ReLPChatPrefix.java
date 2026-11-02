@@ -96,7 +96,6 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         ServerPlayer player = event.player();
         String rawText = event.message();
         try {
-            // NEW
             var user = LuckPermsHelper.INSTANCE.getUser(player.getUUID());
             if (user == null) {
                 createErrorLog("Failed to get LuckPerms user for player: " + player.getName().getString());
