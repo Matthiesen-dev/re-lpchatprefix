@@ -30,6 +30,7 @@ dependencies {
     runtimeOnly(libs.bundles.neoforgeRuntimeOnly)
     implementation(libs.bundles.neoforgeImplementation)
     modImplementation(libs.bundles.neoforgeModImplementationNoTransitive) { isTransitive = false }
+    modRuntimeOnly(libs.bundles.neoforgeModRuntimeOnly)
 
     libs.bundles.neoforgeImplementationInclude.get().forEach { dependency ->
         implementation(dependency.copy())

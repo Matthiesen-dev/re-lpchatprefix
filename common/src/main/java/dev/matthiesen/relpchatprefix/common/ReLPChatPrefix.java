@@ -1,6 +1,6 @@
 package dev.matthiesen.relpchatprefix.common;
 
-import dev.matthiesen.libs.faststats.Token;
+import dev.faststats.Token;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
 import dev.matthiesen.matthiesen_core.common.api.events.server.PlayerEvent;
@@ -8,6 +8,7 @@ import dev.matthiesen.matthiesen_core.common.api.events.server.ServerEvent;
 import dev.matthiesen.matthiesen_core.common.api.platform.loader.ModConfigType;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.BuiltInTextParsers;
 import dev.matthiesen.matthiesen_core.common.api.text_parsers.TextParser;
+import dev.matthiesen.matthiesen_core.common.core.permissions.LuckPermsHelper;
 import dev.matthiesen.matthiesen_core.common.utility.chat.ServerMessagingUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -95,9 +96,20 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
         ServerPlayer player = event.player();
         String rawText = event.message();
         try {
-            String messageFormat = ReLPChatPrefixFormatter.getChatComponent(player, ReLPChatPrefixConfig.SERVER_CONFIG.messageFormat.get());
+            // NEW
+            var user = LuckPermsHelper.INSTANCE.getUser(player.getUUID());
+            if (user == null) {
+                createErrorLog("Failed to get LuckPerms user for player: " + player.getName().getString());
+                return false;
+            }
+
+            var placeholders = ReLPChatPrefixFormatter.getChatMessagePlaceholders(player, user);
+            String messageFormat = ReLPChatPrefixConfig.SERVER_CONFIG.messageFormat.get();
+            Component chatComponent = getTextParser().parse(messageFormat, placeholders);
+
             Component messageComponent = ReLPChatPrefixFormatter.processUserMessage(rawText, ReLPChatPrefixConfig.SERVER_CONFIG.messageColor.get());
-            Component finalComponent = ReLPChatPrefixFormatter.getMessageComponent(messageFormat, messageComponent);
+            Component finalComponent = chatComponent.copy().append(messageComponent);
+
             ServerMessagingUtil.sendToAllAndConsole(finalComponent);
             return true;
         } catch (RuntimeException e) {
@@ -121,9 +133,16 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
 
     private void loginLogoutEvent(ServerPlayer player, String messageFormat) {
         try {
-            messageFormat = ReLPChatPrefixFormatter.getChatComponent(player, messageFormat);
-            Component message = ReLPChatPrefixFormatter.getMessageComponent(messageFormat);
-            ServerMessagingUtil.sendToAllAndConsole(message);
+            var user = LuckPermsHelper.INSTANCE.getUser(player.getUUID());
+            if (user == null) {
+                createErrorLog("Failed to get LuckPerms user for player: " + player.getName().getString());
+                return;
+            }
+
+            var placeholders = ReLPChatPrefixFormatter.getChatMessagePlaceholders(player, user);
+            Component formattedMessage = getTextParser().parse(messageFormat, placeholders);
+
+            ServerMessagingUtil.sendToAllAndConsole(formattedMessage);
         } catch (RuntimeException e) {
             createErrorLog("Error handling player login/logout event for " + player.getName().getString(), e);
         }
@@ -136,10 +155,16 @@ public final class ReLPChatPrefix extends AbstractCommonMod {
             String playerUUID = player.getStringUUID();
             if (ReLPChatPrefixPlayerStore.hasPlayerBeenSeen(playerUUID)) return;
 
+            var user = LuckPermsHelper.INSTANCE.getUser(player.getUUID());
+            if (user == null) {
+                createErrorLog("Failed to get LuckPerms user for player: " + player.getName().getString());
+                return;
+            }
+
             ReLPChatPrefixPlayerStore.markPlayerAsSeen(playerUUID);
-            String loginFormat = ReLPChatPrefixFormatter.getChatComponent(player, ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_message.get());
-            Component message = ReLPChatPrefixFormatter.getMessageComponent(loginFormat);
-            ServerMessagingUtil.sendToAllAndConsole(message);
+            var placeholders = ReLPChatPrefixFormatter.getChatMessagePlaceholders(player, user);
+            Component formattedMessage = getTextParser().parse(ReLPChatPrefixConfig.SERVER_CONFIG.firstJoin_message.get(), placeholders);
+            ServerMessagingUtil.sendToAllAndConsole(formattedMessage);
         } catch (RuntimeException e) {
             createErrorLog("Error handling first join event for " + player.getName().getString(), e);
         }

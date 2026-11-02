@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class ReLPChatPrefixPlayerStore extends SavedData {
+    private static final String NBT_ENTRIES_KEY = "entries";
     private final Map<String, Integer> playerStore = new HashMap<>();
 
     public ReLPChatPrefixPlayerStore() {}
@@ -19,7 +20,7 @@ public final class ReLPChatPrefixPlayerStore extends SavedData {
 
     public static ReLPChatPrefixPlayerStore load(CompoundTag nbt, HolderLookup.Provider provider) {
         ReLPChatPrefixPlayerStore data = create();
-        CompoundTag entriesNBT = nbt.getCompound("entries");
+        CompoundTag entriesNBT = nbt.getCompound(NBT_ENTRIES_KEY);
         for (String key : entriesNBT.getAllKeys()) {
             data.playerStore.put(key, entriesNBT.getInt(key));
         }
@@ -30,7 +31,7 @@ public final class ReLPChatPrefixPlayerStore extends SavedData {
     public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.Provider provider) {
         CompoundTag entriesNBT = new CompoundTag();
         playerStore.forEach(entriesNBT::putInt);
-        nbt.put("entries", entriesNBT);
+        nbt.put(NBT_ENTRIES_KEY, entriesNBT);
         return nbt;
     }
 

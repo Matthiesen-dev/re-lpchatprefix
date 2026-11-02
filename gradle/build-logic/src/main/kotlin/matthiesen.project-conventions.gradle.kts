@@ -60,6 +60,7 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
+    maven("https://repo.faststats.dev/snapshots")
 }
 
 dependencies {
