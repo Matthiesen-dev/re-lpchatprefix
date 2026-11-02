@@ -20,7 +20,7 @@ public abstract class DisableVanillaJoinLeaveMessagesMixin {
                     target = "Lnet/minecraft/server/players/PlayerList;broadcastSystemMessage(Lnet/minecraft/network/chat/Component;Z)V"
             )
     )
-    public boolean disableVanillaJoinAndLeaveMessage(PlayerList instance, Component component, boolean bl) {
+    public boolean disableVanillaJoinAndLeaveMessage(PlayerList instance, Component arg, boolean bl) {
         return !ReLPChatPrefix.INSTANCE.initialized;
     }
 }
